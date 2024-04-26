@@ -42,6 +42,30 @@ async function run() {
       res.send(result);
     })
 
+    app.put("/spots/:id", async(req,res)=>{
+      const id = req.params.id;
+      const filter ={_id: new ObjectId(id)};
+      const options = {upsert : true};
+      const updatedInfo = req.body;
+      const updated = {
+        $set:{
+           spot : updatedInfo.spot,
+           country: updatedInfo.country,
+           location: updatedInfo.location,
+           cost: updatedInfo.cost,
+           season: updatedInfo.season,
+           time: updatedInfo.time,
+           visitors: updatedInfo.visitors,
+           description: updatedInfo.description,
+           name: updatedInfo.name,
+           email: updatedInfo.email,
+           photoURL: updatedInfo.photoURL,
+        }
+      }
+      const result = await spotCollection.updateOne(filter,updated,options);
+      res.send(result);
+    })
+
     // delete spot
     app.delete("/spots/:id",async(req,res)=>{
       const id = req.params.id;
@@ -49,6 +73,7 @@ async function run() {
       const result = await spotCollection.deleteOne(query);
       res.send(result);
     })
+
     
     app.post("/spots",async(req,res)=>{
       const newSpot = req.body;
