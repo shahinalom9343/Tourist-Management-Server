@@ -34,6 +34,14 @@ async function run() {
       res.send(result);
     })
 
+    // update info
+    app.get("/spots/:id", async(req,res)=>{
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)}
+      const result = await spotCollection.findOne(query);
+      res.send(result);
+    })
+
     // delete spot
     app.delete("/spots/:id",async(req,res)=>{
       const id = req.params.id;
